@@ -7,12 +7,15 @@ numbers = []
 path = []
 pathChecked = []
 
+numberOfFlagsRemaining = 10
+
 for (let i = 0; i < gridSize; i++) {
     
     for (let j = 0; j < gridSize; j++) {
         mezo = document.createElement("div")
         mezo.setAttribute("type", 0)
         mezo.setAttribute("onclick", "check(this)")
+        mezo.addEventListener("contextmenu", (e) => placeFlag(e), false)
         mezo.id = `${i}-${j}` 
         table.appendChild(mezo)
     }
@@ -49,6 +52,10 @@ for (let i = 0; i < gridSize; i++) {
 }
 
 function check(mezo) {
+    if (mezo.classList.contains("flag")) {
+        return;
+    }
+
     if (mezo.getAttribute("type") == 1) {
         revealBomb(mezo)
         retry.style.visibility = "visible"
@@ -103,6 +110,28 @@ function revealBomb(div) {
     div.style.backgroundColor = "red"
     div.classList.add("bomb")
     div.innerHTML = `<img src = "images/mine.png">`
+}
+
+function placeFlag(e) {
+    e.preventDefault()
+    let div = e.target
+    if (!numberOfFlagsRemaining || !div) {
+        return
+    }
+
+    if (div.classList.contains("flag")) {
+        div.classList.remove("flag")
+        div.innerHTML = ""
+
+        numberOfFlagsRemaining++
+    } else {
+        div.classList.add("flag")
+        div.innerHTML = `<img src = "images/flag.png">`
+
+        numberOfFlagsRemaining--
+    }
+
+    return false
 }
 
 function findNeighbour(list) {
