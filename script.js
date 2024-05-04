@@ -114,8 +114,10 @@ function revealBomb(div) {
 
 function placeFlag(e) {
     e.preventDefault()
-    let div = e.target
-    if (!numberOfFlagsRemaining || !div) {
+    let target = e.target
+
+    div = target.tagName == "DIV" ? target : target.parentElement
+    if (!target) {
         return
     }
 
@@ -124,7 +126,7 @@ function placeFlag(e) {
         div.innerHTML = ""
 
         numberOfFlagsRemaining++
-    } else {
+    } else if (numberOfFlagsRemaining > 0) {
         div.classList.add("flag")
         div.innerHTML = `<img src = "images/flag.png">`
 
