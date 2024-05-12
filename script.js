@@ -117,7 +117,7 @@ function placeFlag(e) {
     let target = e.target
 
     div = target.tagName == "DIV" ? target : target.parentElement
-    if (!target) {
+    if (!target || target.classList.contains("clicked")) {
         return
     }
 
